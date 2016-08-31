@@ -1,8 +1,7 @@
 # config.ru
-class Greeter
-  def call(env)
-    [200, { "Content-Type" => "text/plain" }, ["Hello World"]]
-  end
-end
+require 'greeter'
 
+# Reloader has a 10 seconds cooldown by default
+# Change it to 0, so that it picks up the changes immediately
+use Rack::Reloader, 0
 run Greeter.new
