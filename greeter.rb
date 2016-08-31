@@ -1,13 +1,23 @@
-# greeter.rb
-require 'erb'
-
-class Greeter
+class Greeter    
   def call(env)
-    Rack::Response.new render("index.erb")
+    @request = Rack::Request.new(env)
+    case @request.path
+    when "/" then Rack::Response.new render("index.erb")
+    when "/change" 
+      Rack::Response.new do |response|
+        response.set_cookie "greet", @request.params["name"]
+        response.redirect "/"
+      end 
+    else Rack::Response.new "Not Found", 404
+    end 
   end
   
   def render(template)
     path = File.expand_path("../views/#{template}", __FILE__)
-    ERB.new(File.read(path)).result
-  end  
+    ERB.new(File.read(path)).result(binding)
+  end
+  
+  def greet_name
+    @request.cookies["greet"] || "World"
+  end
 end

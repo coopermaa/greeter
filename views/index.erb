@@ -5,8 +5,12 @@
   </head>
   <body>
     <div id="container">
-      <h1>Hello World</h1>
+      <h1>Hello <%= greet_name %></h1>
       <h1>Current Time: <%= Time.now %></h1> 
+        <form method="post" action="/change">
+          <input name="name" type="text">
+          <input type="submit" value="Change Name">
+        </form>
     </div>
   </body>
 </html>
